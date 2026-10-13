@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Love - </title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #050505;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    font-family: 'Tahoma', sans-serif;
+}
+
+.heart-container {
+    position: relative;
+    width: 500px;
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: beat 1.5s infinite ease-in-out;
+}
+
+/* ข้อความตรงกลางหัวใจ */
+.center-text {
+    position: absolute;
+    font-size: 42px;
+    font-weight: bold;
+    color: #ffffff;
+    text-shadow: 0 0 15px #ff69b4, 0 0 30px #ff1493, 0 0 45px #ff1493;
+    z-index: 10;
+    text-align: center;
+    letter-spacing: 2px;
+    pointer-events: none;
+}
+
+/* คำเล็กๆ ที่เรียงเป็นกรอบหัวใจ */
+.word {
+    position: absolute;
+    font-weight: bold;
+    white-space: nowrap;
+    text-shadow: 0 0 8px currentColor;
+    user-select: none;
+    transform: translate(-50%, -50%); /* จัดกึ่งกลางหมุดตัวอักษร */
+}
+
+.pink {
+    color: #ff69b4;
+}
+
+.blue {
+    color: #00dfff;
+}
+
+.white {
+    color: #ffffff;
+}
+
+@keyframes beat {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+@media (max-width: 600px) {
+    .heart-container {
+        transform: scale(0.75);
+    }
+    @keyframes beat {
+        0%, 100% { transform: scale(0.75); }
+        50% { transform: scale(0.8); }
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="heart-container" id="heart">
+    <!-- ข้อความใหญ่ตรงกลาง (แก้ไขข้อความตรงนี้ได้เลยครับ) -->
+    <div class="center-text">แฟน ❤️</div>
+</div>
+
+<script>
+const heart = document.getElementById("heart");
+const colors = ["pink", "blue", "white"];
+
+// ข้อความที่จะให้วิ่งรอบๆ กรอบหัวใจ
+const borderWord = "กำลังใจ"; 
+
+// จำนวนคำที่วิ่งรอบขอบหัวใจ
+const totalWords = 80; 
+
+for (let i = 0; i < totalWords; i++) {
+    // กระจายมุมเท่าๆ กันรอบวงกลมเพื่อให้เรียงสวยงาม
+    const t = (i / totalWords) * Math.PI * 2;
+
+    // สมการเส้นขอบรูปหัวใจ
+    const x = 16 * Math.pow(Math.sin(t), 3);
+    const y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
+
+    const span = document.createElement("span");
+    span.className = "word " + colors[i % colors.length]; // สลับสีเป็นระเบียบ
+    span.textContent = borderWord;
+
+    // ปรับสเกลยืด-ขยายรูปทรงหัวใจให้ได้สัดส่วนสวยงามพอดี
+    const posX = x * 15;
+    const posY = -y * 15; // กลับแกน Y
+
+    span.style.left = `calc(50% + ${posX}px)`;
+    span.style.top = `calc(50% + ${posY}px)`;
+    span.style.fontSize = "13px";
+
+    heart.appendChild(span);
+}
+</script>
+
+</body>
+</html>
